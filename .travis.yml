@@ -22,11 +22,13 @@ deploy:
     tag: latest
     on:
       tags: true
-      condition: "$TRAVIS_TAG" != *"-"*
+      condition: >
+        "$TRAVIS_TAG" != *"-"*
   - provider: npm
     email: ken@gizzar.com
     api_key: $NPM_TOKEN
     tag: next
     on:
       tags: true
-      condition: "$TRAVIS_TAG" == *"-"*
+      condition: >
+        "$TRAVIS_TAG" == *"-"*
