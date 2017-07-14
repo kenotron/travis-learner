@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+- "node"
+before_install:
+- npm config set spin false
+- npm i -g makeshift && makeshift -r https://registry.npmjs.org
+install:
+- npm install
+script:
+- |
+  if [ -n "$TRAVIS_TAG" ]; then
+    npm run build
+  fi
+- |
+  if [ "$TRAVIS_PULL_REQUEST" = "true" ]; then
+    bash npm run test
+  fi
+deploy:
+  - provider: npm
+    email: ken@gizzar.com
+    api_key: $NPM_TOKEN
+    tag: latest
+    on:
+      tags: true
+      condition: "$TRAVIS_TAG" != *"-"*
+  - provider: npm
+    email: ken@gizzar.com
+    api_key: $NPM_TOKEN
+    tag: next
+    on:
+      tags: true
+      condition: "$TRAVIS_TAG" == *"-"*
